@@ -8,10 +8,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
+        colors: {
+            "dark-deep-purple": "#512DA8",
+            "light-deep-purple": "#673AB7",
+            "lighter-deep-purple": "#7E57C2",
+        },
     },
   },
   plugins: [],
