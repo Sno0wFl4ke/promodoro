@@ -20,6 +20,7 @@ const Timer = () => {
     const [isRunning, setIsRunning] = useState(false);
     const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
     const [remainingTime, setRemainingTime] = useState(duration * 60000);
+    const [breakStartTime, setBreakStartTime] = useState<Date | null>(null);
 
     useEffect(() => {
         setRemainingTime(duration * 60000);
@@ -66,6 +67,7 @@ const Timer = () => {
                         clearInterval(interval);
                     } else {
                         setOnBreak(true);
+                        setBreakStartTime(new Date());
                         target = new Date(new Date().getTime() + 5 * 60000);
                     }
                 }
@@ -111,6 +113,18 @@ const Timer = () => {
         updateTimerDisplay(duration);
     };
 
+    const handleBreak = (minutes: number) => {
+        setOnBreak(true);
+        setBreakStartTime(new Date());
+        setRemainingTime(minutes * 60000);
+    };
+
+    const handleEndBreak = () => {
+        setOnBreak(false);
+        setTimeUp(false);
+        updateTimerDisplay(duration);
+    };
+
     return (
         <div className={`w-full h-full flex flex-col items-center p-20 ease-in duration-300 ${COLOR_DARK_BG}`}>
             <div className="max-w-[1240px] m-auto flex flex-col justify-center items-center p-4 rounded-2xl">
@@ -120,9 +134,9 @@ const Timer = () => {
                         <h1 className={`text-7xl font-bold ${COLOR_LIGHT_TEXT}`}>Time is up</h1>
                     ) : onBreak ? (
                         <>
-                            <h1>Break</h1>
+                            <h1 className={`${COLOR_LIGHT_TEXT}`}>Break</h1>
                             <div className="timer-segment">
-                                <span className="time">
+                                <span className={` text-7xl font-bold ${COLOR_LIGHT_TEXT}`}>
                                     {formatTime(remainingTime)}
                                 </span>
                             </div>
@@ -199,6 +213,31 @@ const Timer = () => {
                             <AiOutlineSelect size={24}/>
                         </Button>
                     </div>
+                </div>
+                <div className="flex justify-center space-x-4 mt-4">
+                    <Button onClick={() => handleBreak(5)} className={`rounded-2xl p-4 ${COLOR_LIGHT_BG} ${COLOR_DARK_TEXT} font-bold`}>
+                        5 Minute Break
+                    </Button>
+                    <Button onClick={() => handleBreak(10)} className={`rounded-2xl p-4 ${COLOR_LIGHT_BG} ${COLOR_DARK_TEXT} font-bold`}>
+                        10 Minute Break
+                    </Button>
+                    <div className="flex items-center">
+                        <input
+                            type="number"
+                            value={customDuration}
+                            onChange={(e) => setCustomDuration(e.target.value)}
+                            placeholder="Custom (mins)"
+                            className={`p-4 rounded ${COLOR_LIGHT_BG} ${COLOR_DARK_TEXT} font-bold rounded-2xl`}
+                        />
+                        <Button onClick={() => handleBreak(parseInt(customDuration, 10))} className={`ml-2 p-4 flex ${COLOR_LIGHT_BG} ${COLOR_DARK_TEXT} font-bold rounded-2xl`}>
+                            Custom Break
+                        </Button>
+                    </div>
+                    {onBreak && (
+                        <Button onClick={handleEndBreak} className={`rounded-2xl p-4 ${COLOR_LIGHT_BG} ${COLOR_DARK_TEXT} font-bold`}>
+                            End Break
+                        </Button>
+                    )}
                 </div>
             </footer>
         </div>
