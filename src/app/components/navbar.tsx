@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@nextui-org/button";
-import { COLOR_DARK_TEXT, COLOR_LIGHT_BG } from "@/app/constants/colors";
+import {COLOR_DARK_BG, COLOR_DARK_TEXT, COLOR_LIGHT_BG, COLOR_LIGHT_TEXT} from "@/app/constants/colors";
+import {Dropdown, DropdownItem, DropdownMenu, DropdownTrigger} from "@nextui-org/react";
 
 const Navbar = () => {
     const [nav, setNav] = useState(false);
@@ -15,29 +16,42 @@ const Navbar = () => {
 
     return (
         <div className={`p-3 `}>
-            <ul className="max-w-[1240px] m-auto flex items-center p-4 sticky">
-                <li className="p-4">
-                    <Button className={`${COLOR_LIGHT_BG} ${COLOR_DARK_TEXT} font-bold p-4 rounded-2xl`} onClick={
-                        () => {
-                            window.location.href = "/";
-                        }
-                    }>Home</Button>
-                </li>
-                <li className="p-4">
-                    <Button className={`${COLOR_LIGHT_BG} ${COLOR_DARK_TEXT} font-bold p-4 rounded-2xl`} onClick={
-                        () => {
-                            window.location.href = "/pages/tasks";
-                        }
-                    }>Tasks</Button>
-                </li>
-                <li className="p-4">
-                    <Button className={`${COLOR_LIGHT_BG} ${COLOR_DARK_TEXT} font-bold p-4 rounded-2xl`}  onClick={
-                        () => {
-                            window.location.href = "/pages/about";
-                        }
-                    }>About</Button>
-                </li>
-            </ul>
+            <Dropdown className={`p-4 text-center items-center justify-center rounded-2xl ${COLOR_DARK_BG} ${COLOR_LIGHT_TEXT} font-bold`}>
+                <DropdownTrigger>
+                    <Button variant="bordered" className={`text-center items-center rounded-2xl p-4 ${COLOR_DARK_BG} ${COLOR_LIGHT_TEXT} font-bold`}><AiOutlineMenu/></Button>
+                </DropdownTrigger>
+                <DropdownMenu className="p-4">
+                    <DropdownItem key="home" className="text-center p-4">
+                        <Button className={'home-button'} onClick={
+                            () => {
+                                window.location.href = "/";
+                            }
+                        }>Home</Button>
+                    </DropdownItem>
+                    <DropdownItem key="tasks">
+                        <Button className={`tasks-button p-4`} onClick={
+                            () => {
+                                window.location.href = "/pages/tasks";
+                            }
+                        }>Tasks</Button>
+                    </DropdownItem>
+                    <DropdownItem key="calculator">
+                        <Button className={`tasks-button p-4`} onClick={
+                            () => {
+                                window.location.href = "/pages/calculator";
+                            }
+                        }>Calculator</Button>
+                    </DropdownItem>
+                    <DropdownItem key="about">
+                        <Button className={`about-button p-4`}  onClick={
+                            () => {
+                                window.location.href = "/pages/about";
+                            }
+                        }>About</Button>
+                    </DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
+
 
             <div className="block sm:hidden z-10" onClick={handleNav}>
                 {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
